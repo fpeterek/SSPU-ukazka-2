@@ -29,6 +29,11 @@ class Game {
     std::vector<Enemy> enemies;
     std::vector<Projectile> projectiles;
 
+    void loadTextures();
+
+    void createEnemy(const sf::Vector2f & position);
+
+    void tick();
     void handleEvents();
     void draw();
 

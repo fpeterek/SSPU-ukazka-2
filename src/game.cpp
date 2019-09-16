@@ -2,7 +2,6 @@
 // Created by Peterek, Filip on 16/09/2019.
 //
 
-#include <iostream>
 #include "game.hpp"
 
 const sf::Color Game::background = sf::Color(255, 255, 255);
@@ -35,11 +34,15 @@ void Game::handleEvents() {
 
 }
 
+void Game::tick() {
+    handleEvents();
+    draw();
+}
+
 void Game::run() {
 
     while (win.isOpen()) {
-        handleEvents();
-        draw();
+        tick();
     }
 
 }
@@ -51,10 +54,23 @@ Game::Game() :
     win.setFramerateLimit(60);
     scale = win.getSize().x / 800.f;
 
-    textureManager.loadTexture("player", "resources/player.png");
-    textureManager.loadTexture("enemy", "resources/enemy.png");
+    loadTextures();
 
     const auto playerPos = sf::Vector2f(win.getSize().x / 15, win.getSize().y / 2);
     player = Player(textureManager.getTexture("player"), playerPos, scale);
 
+    createEnemy(sf::Vector2f(win.getSize().x - win.getSize().x / 10, win.getSize().y / 4));
+    createEnemy(sf::Vector2f(win.getSize().x - win.getSize().x / 6, win.getSize().y / 2));
+    createEnemy(sf::Vector2f(win.getSize().x - win.getSize().x / 16, win.getSize().y / 4 * 3));
+
 }
+
+void Game::createEnemy(const sf::Vector2f & position) {
+    enemies.emplace_back(textureManager.getTexture("enemy"), position, scale);
+}
+
+void Game::loadTextures() {
+    textureManager.loadTexture("player", "resources/player.png");
+    textureManager.loadTexture("enemy", "resources/enemy.png");
+}
+
