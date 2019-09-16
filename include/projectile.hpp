@@ -10,19 +10,23 @@
 
 class Projectile : public Entity {
 
-    static sf::Color fill;
-    static sf::Color outline;
+    static const sf::Color fill;
+    static const sf::Color outline;
+    static const uint64_t radius;
     sf::CircleShape bullet;
+
+    sf::FloatRect globalBounds() const override;
 
 public:
 
     const sf::Vector2f & position() const override;
     void update() override;
+    void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
 
-    Projectile(const sf::Vector2f & position, const float scale);
+    float scale() const override;
 
-protected:
-    sf::FloatRect globalBounds() const override;
+    Projectile(const sf::Vector2f & position, float scale);
+
 };
 
 

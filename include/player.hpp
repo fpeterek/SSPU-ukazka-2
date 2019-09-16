@@ -9,10 +9,13 @@
 #include "aircraft.hpp"
 
 class Player : public Aircraft {
-public:
-    Projectile shoot() override;
 
+public:
+
+    Projectile shoot() override;
     void update() override;
+    Player(const sf::Texture & texture, const sf::Vector2f & pos, float scale);
+
 };
 
 

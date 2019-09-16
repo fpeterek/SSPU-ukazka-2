@@ -25,7 +25,8 @@ public:
 
     virtual Projectile shoot() = 0;
     const sf::Vector2f & position() const override;
-
+    float scale() const override;
+    void rotate(float val);
 };
 
 

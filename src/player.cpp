@@ -5,9 +5,16 @@
 #include "player.hpp"
 
 Projectile Player::shoot() {
-    return Projectile();
+    return Projectile(position(), scale());
 }
 
 void Player::update() {
+
+}
+
+Player::Player(const sf::Texture & texture, const sf::Vector2f & pos, const float scale) :
+        Aircraft(texture, pos, scale) {
+
+    rotate(90);
 
 }

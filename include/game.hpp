@@ -13,22 +13,28 @@
 #include "projectile.hpp"
 #include "enemy.hpp"
 #include "player.hpp"
+#include "texture_manager.hpp"
 
 class Game {
 
-    sf::RenderWindow win;
     static const sf::Color background;
+
+    sf::RenderWindow win;
+    TextureManager textureManager;
+    float scale;
+
 
     Player player;
 
-    std::vector<sf::Texture> textures;
     std::vector<Enemy> enemies;
     std::vector<Projectile> projectiles;
 
+    void handleEvents();
     void draw();
 
 public:
 
+    Game();
     void run();
 
 };

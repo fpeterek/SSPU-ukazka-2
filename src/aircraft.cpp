@@ -22,3 +22,11 @@ sf::FloatRect Aircraft::globalBounds() const {
 const sf::Vector2f & Aircraft::position() const {
     return sprite.getPosition();
 }
+
+float Aircraft::scale() const {
+    return sprite.getScale().x;
+}
+
+void Aircraft::rotate(const float val) {
+    sprite.setRotation(val);
+}

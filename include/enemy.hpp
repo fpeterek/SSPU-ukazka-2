@@ -10,6 +10,13 @@
 
 class Enemy : public Aircraft {
 
+    Projectile shoot() override;
+
+public:
+
+    void update() override;
+    Enemy(const sf::Texture & texture, const sf::Vector2f & pos, float scale);
+
 };
 
 
