@@ -9,7 +9,10 @@
 #include "aircraft.hpp"
 
 class Player : public Aircraft {
+public:
+    Projectile shoot() override;
 
+    void update() override;
 };
 
 

@@ -3,3 +3,11 @@
 //
 
 #include "player.hpp"
+
+Projectile Player::shoot() {
+    return Projectile();
+}
+
+void Player::update() {
+
+}
