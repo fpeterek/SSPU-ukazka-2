@@ -7,21 +7,23 @@
 
 #include <SFML/Graphics.hpp>
 
-class Entity : public sf::Drawable {
+namespace sspu {
 
-protected:
+    class Entity : public sf::Drawable {
 
-    float velocity;
-    virtual sf::FloatRect globalBounds() const = 0;
+    protected:
+        virtual sf::FloatRect globalBounds() const = 0;
 
-public:
+    public:
 
-    bool intersects(const Entity & ac) const;
+        bool intersects(const Entity & ac) const;
 
-    virtual const sf::Vector2f & position() const = 0;
-    virtual float scale() const = 0;
-    virtual void update() = 0;
+        virtual const sf::Vector2f & position() const = 0;
+        virtual float scale() const = 0;
+        virtual void update() = 0;
 
-};
+    };
+
+}
 
 #endif //SSPU_UKAZKA_2_ENTITY_CPP

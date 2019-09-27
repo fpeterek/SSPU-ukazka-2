@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include "game.hpp"
+#include "engine.hpp"
 
 int main() {
-    Game game;
-    game.run();
+    sspu::Engine engine;
+    engine.run();
 }

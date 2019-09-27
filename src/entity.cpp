@@ -4,6 +4,6 @@
 
 #include "entity.hpp"
 
-bool Entity::intersects(const Entity & ac) const {
+bool sspu::Entity::intersects(const Entity & ac) const {
     return globalBounds().intersects(ac.globalBounds());
 }
