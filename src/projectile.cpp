@@ -37,3 +37,7 @@ void Projectile::draw(sf::RenderTarget & target, sf::RenderStates states) const 
 float Projectile::scale() const {
     return bullet.getScale().x;
 }
+
+uint64_t Projectile::damage() {
+    return 1;
+}

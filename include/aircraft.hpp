@@ -16,6 +16,8 @@ class Aircraft : public Entity {
 
 protected:
 
+    int64_t health = 0;
+
     sf::FloatRect globalBounds() const override;
     void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
 

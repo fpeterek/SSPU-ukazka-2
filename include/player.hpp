@@ -10,11 +10,17 @@
 
 class Player : public Aircraft {
 
+    static const int64_t maxHealth;
+
 public:
 
     Projectile shoot() override;
     void update() override;
     Player(const sf::Texture & texture, const sf::Vector2f & pos, float scale);
+
+    bool onHit() override;
+
+    bool onCrash() override;
 
 };
 

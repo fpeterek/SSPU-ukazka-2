@@ -21,6 +21,8 @@ public:
     virtual const sf::Vector2f & position() const = 0;
     virtual float scale() const = 0;
     virtual void update() = 0;
+    virtual bool onHit();
+    virtual bool onCrash();
 
 };
 
