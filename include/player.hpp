@@ -5,12 +5,13 @@
 #ifndef SSPU_UKAZKA_2_PLAYER_HPP
 #define SSPU_UKAZKA_2_PLAYER_HPP
 
-
+#include <iostream>
 #include "aircraft.hpp"
 
 class Player : public Aircraft {
 
     static const int64_t maxHealth;
+    static const uint64_t verticalVelocity;
 
 public:
 
@@ -18,8 +19,10 @@ public:
     void update() override;
     Player(const sf::Texture & texture, const sf::Vector2f & pos, float scale);
 
-    bool onHit() override;
+    void moveUp(const uint64_t upperBound = 0);
+    void moveDown(const uint64_t lowerBound);
 
+    bool onHit() override;
     bool onCrash() override;
 
 };

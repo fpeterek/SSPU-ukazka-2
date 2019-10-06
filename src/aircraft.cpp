@@ -30,3 +30,11 @@ float Aircraft::scale() const {
 void Aircraft::rotate(const float val) {
     sprite.setRotation(val);
 }
+
+void Aircraft::move(const sf::Vector2f diff) {
+    sprite.move(diff);
+}
+
+void Aircraft::setPosition(sf::Vector2f pos) {
+    sprite.setPosition(pos);
+}

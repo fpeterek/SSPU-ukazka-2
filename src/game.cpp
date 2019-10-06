@@ -32,6 +32,10 @@ void Game::handleEvents() {
         }
     }
 
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+        player.moveUp();
+    }
+
 }
 
 void Game::tick() {

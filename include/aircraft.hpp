@@ -25,6 +25,8 @@ protected:
 
 public:
 
+    void move(sf::Vector2f diff);
+    void setPosition(sf::Vector2f pos);
     virtual Projectile shoot() = 0;
     const sf::Vector2f & position() const override;
     float scale() const override;
