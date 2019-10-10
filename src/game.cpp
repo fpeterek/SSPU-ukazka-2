@@ -32,14 +32,19 @@ void Game::handleEvents() {
         }
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
         player.moveUp();
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+        player.moveDown();
     }
 
 }
 
 void Game::tick() {
     handleEvents();
+    handleMovement();
+    player.update();
     draw();
 }
 
@@ -76,5 +81,30 @@ void Game::createEnemy(const sf::Vector2f & position) {
 void Game::loadTextures() {
     textureManager.loadTexture("player", "resources/player.png");
     textureManager.loadTexture("enemy", "resources/enemy.png");
+}
+
+void Game::handleMovement() {
+
+    moveEntity(player);
+    for (auto & e : enemies) {
+        moveEntity(e);
+    }
+
+}
+
+void Game::moveEntity(Moveable & mv) {
+
+    sf::Vector2f forces = mv.forces();
+    mv.move(forces);
+
+    sf::FloatRect bounds = mv.globalBounds();
+
+    if (bounds.top < 0) {
+        mv.move(sf::Vector2f(0, bounds.top * -1));
+    }
+    if (bounds.top > win.getSize().y - bounds.height) {
+        mv.move(sf::Vector2f(0, win.getSize().y - (bounds.top + bounds.height)));
+    }
+
 }
 

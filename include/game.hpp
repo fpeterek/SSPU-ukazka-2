@@ -36,6 +36,8 @@ class Game {
     void tick();
     void handleEvents();
     void draw();
+    void handleMovement();
+    void moveEntity(Moveable & mv);
 
 public:
 

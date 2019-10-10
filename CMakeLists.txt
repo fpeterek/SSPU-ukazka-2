@@ -8,6 +8,6 @@ include_directories(include /usr/local/include)
 link_directories(/usr/local/lib)
 link_libraries(-lsfml-graphics -lsfml-window -lsfml-audio -lsfml-network -lsfml-system)
 
-add_executable(SSPU_ukazka_2 src/main.cpp src/game.cpp include/game.hpp src/player.cpp include/player.hpp src/projectile.cpp include/projectile.hpp src/enemy.cpp include/enemy.hpp src/aircraft.cpp include/aircraft.hpp include/entity.hpp src/entity.cpp include/texture_manager.hpp src/texture_manager.cpp)
+add_executable(SSPU_ukazka_2 src/main.cpp src/game.cpp include/game.hpp src/player.cpp include/player.hpp src/projectile.cpp include/projectile.hpp src/enemy.cpp include/enemy.hpp src/aircraft.cpp include/aircraft.hpp include/entity.hpp src/entity.cpp include/texture_manager.hpp src/texture_manager.cpp include/moveable.hpp)
 
 file(COPY resources DESTINATION .)

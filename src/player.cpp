@@ -12,7 +12,8 @@ Projectile Player::shoot() {
 }
 
 void Player::update() {
-
+    forceVector.x = 0;
+    forceVector.y = 0;
 }
 
 Player::Player(const sf::Texture & texture, const sf::Vector2f & pos, const float scale) :
@@ -32,14 +33,11 @@ bool Player::onCrash() {
     return Entity::onCrash();
 }
 
-void Player::moveUp(uint64_t upperBound) {
-
-    move(sf::Vector2f(0, -velocity));
-    std::cout << globalBounds().top << std::endl;
-    if (globalBounds().top < upperBound) {
-        auto newPos = position();
-        newPos.y = (globalBounds().top - upperBound) * -1;
-        setPosition(sf::Vector2f(newPos));
-    }
-
+void Player::moveUp() {
+    forceVector.y = -1 * velocity;
 }
+
+void Player::moveDown() {
+    forceVector.y = 1 * velocity;
+}
+

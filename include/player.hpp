@@ -19,8 +19,8 @@ public:
     void update() override;
     Player(const sf::Texture & texture, const sf::Vector2f & pos, float scale);
 
-    void moveUp(const uint64_t upperBound = 0);
-    void moveDown(const uint64_t lowerBound);
+    void moveUp();
+    void moveDown();
 
     bool onHit() override;
     bool onCrash() override;

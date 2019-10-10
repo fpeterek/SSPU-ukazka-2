@@ -7,16 +7,18 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "moveable.hpp"
+
 class Entity : public sf::Drawable {
 
 protected:
 
     float velocity;
-    virtual sf::FloatRect globalBounds() const = 0;
 
 public:
 
     bool intersects(const Entity & ac) const;
+    virtual sf::FloatRect globalBounds() const = 0;
 
     virtual const sf::Vector2f & position() const = 0;
     virtual float scale() const = 0;

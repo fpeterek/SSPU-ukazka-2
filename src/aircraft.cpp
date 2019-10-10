@@ -38,3 +38,7 @@ void Aircraft::move(const sf::Vector2f diff) {
 void Aircraft::setPosition(sf::Vector2f pos) {
     sprite.setPosition(pos);
 }
+
+sf::Vector2f Aircraft::forces() const {
+    return forceVector;
+}
