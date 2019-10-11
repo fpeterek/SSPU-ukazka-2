@@ -13,6 +13,8 @@
 class Aircraft : public Entity, public Moveable {
 
     sf::Sprite sprite;
+    sf::RectangleShape wingBox;
+    sf::RectangleShape fuselageBox;
 
 protected:
 
@@ -25,6 +27,7 @@ protected:
 
 public:
 
+    int64_t hp();
     void move(sf::Vector2f diff) override;
     void setPosition(sf::Vector2f pos) override;
     sf::FloatRect globalBounds() const override;
@@ -33,6 +36,12 @@ public:
     float scale() const override;
     void rotate(float val);
     sf::Vector2f forces() const override;
+    void onHit() override;
+    void onCrash() override;
+    bool setForRemoval() override;
+    bool hitboxHitDetection(const Entity & e);
+    bool hitboxHitDetection(const Aircraft & e);
+
 };
 
 

@@ -5,7 +5,7 @@
 #include "player.hpp"
 
 const int64_t Player::maxHealth = 3;
-const uint64_t Player::verticalVelocity = 3;
+const uint64_t Player::verticalVelocity = 6;
 
 Projectile Player::shoot() {
     return Projectile(position(), scale());
@@ -25,19 +25,19 @@ Player::Player(const sf::Texture & texture, const sf::Vector2f & pos, const floa
 
 }
 
-bool Player::onHit() {
-    return Entity::onHit();
-}
-
-bool Player::onCrash() {
-    return Entity::onCrash();
-}
-
 void Player::moveUp() {
     forceVector.y = -1 * velocity;
 }
 
 void Player::moveDown() {
     forceVector.y = 1 * velocity;
+}
+
+bool Player::setForRemoval() {
+    return false;
+}
+
+void Player::onCrash() {
+    --health;
 }
 

@@ -19,10 +19,6 @@ public:
     void update() override;
     Enemy(const sf::Texture & texture, const sf::Vector2f & pos, float scale);
 
-    bool onHit() override;
-
-    bool onCrash() override;
-
 };
 
 

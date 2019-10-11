@@ -14,15 +14,17 @@
 #include "enemy.hpp"
 #include "player.hpp"
 #include "texture_manager.hpp"
+#include "enemy_factory.hpp"
 
 class Game {
 
     static const sf::Color background;
+    static constexpr uint64_t spawnChance = 60;
 
     sf::RenderWindow win;
     TextureManager textureManager;
+    std::shared_ptr<EnemyFactory> enemyFactory;
     float scale;
-
 
     Player player;
 
@@ -31,8 +33,9 @@ class Game {
 
     void loadTextures();
 
-    void createEnemy(const sf::Vector2f & position);
-
+    void spawnEnemies();
+    void deleteEnemies();
+    void handleCollisions();
     void tick();
     void handleEvents();
     void draw();

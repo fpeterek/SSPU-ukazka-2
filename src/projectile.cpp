@@ -41,3 +41,15 @@ float Projectile::scale() const {
 uint64_t Projectile::damage() {
     return 1;
 }
+
+void Projectile::onHit() {
+    keepAlive = false;
+}
+
+void Projectile::onCrash() {
+    keepAlive = false;
+}
+
+bool Projectile::setForRemoval() {
+    return not keepAlive;
+}

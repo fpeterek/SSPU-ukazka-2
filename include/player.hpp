@@ -22,8 +22,8 @@ public:
     void moveUp();
     void moveDown();
 
-    bool onHit() override;
-    bool onCrash() override;
+    bool setForRemoval() override;
+    void onCrash() override;
 
 };
 

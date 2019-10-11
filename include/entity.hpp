@@ -17,14 +17,15 @@ protected:
 
 public:
 
-    bool intersects(const Entity & ac) const;
+    virtual bool intersects(const Entity & entity) const;
     virtual sf::FloatRect globalBounds() const = 0;
 
     virtual const sf::Vector2f & position() const = 0;
     virtual float scale() const = 0;
     virtual void update() = 0;
-    virtual bool onHit();
-    virtual bool onCrash();
+    virtual void onHit() = 0;
+    virtual void onCrash() = 0;
+    virtual bool setForRemoval() = 0;
 
 };
 

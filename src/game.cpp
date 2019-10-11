@@ -2,6 +2,7 @@
 // Created by Peterek, Filip on 16/09/2019.
 //
 
+#include <random.hpp>
 #include "game.hpp"
 
 const sf::Color Game::background = sf::Color(255, 255, 255);
@@ -42,8 +43,11 @@ void Game::handleEvents() {
 }
 
 void Game::tick() {
+    spawnEnemies();
     handleEvents();
     handleMovement();
+    handleCollisions();
+    deleteEnemies();
     player.update();
     draw();
 }
@@ -68,14 +72,8 @@ Game::Game() :
     const auto playerPos = sf::Vector2f(win.getSize().x / 15, win.getSize().y / 2);
     player = Player(textureManager.getTexture("player"), playerPos, scale);
 
-    createEnemy(sf::Vector2f(win.getSize().x - win.getSize().x / 10, win.getSize().y / 4));
-    createEnemy(sf::Vector2f(win.getSize().x - win.getSize().x / 6, win.getSize().y / 2));
-    createEnemy(sf::Vector2f(win.getSize().x - win.getSize().x / 16, win.getSize().y / 4 * 3));
+    enemyFactory = std::make_shared<EnemyFactory>(textureManager.getTexture("enemy"), win.getSize(), scale);
 
-}
-
-void Game::createEnemy(const sf::Vector2f & position) {
-    enemies.emplace_back(textureManager.getTexture("enemy"), position, scale);
 }
 
 void Game::loadTextures() {
@@ -106,5 +104,37 @@ void Game::moveEntity(Moveable & mv) {
         mv.move(sf::Vector2f(0, win.getSize().y - (bounds.top + bounds.height)));
     }
 
+}
+
+void Game::deleteEnemies() {
+
+    for (auto iter = enemies.begin(); iter != enemies.end();) {
+
+        const auto bounds = iter->globalBounds();
+        if (bounds.left < bounds.width * -1 or iter->setForRemoval()) {
+            enemies.erase(iter);
+        } else {
+            ++iter;
+        }
+
+    }
+
+}
+
+void Game::spawnEnemies() {
+
+    if (Random::randInt(1, spawnChance) == spawnChance) {
+        enemies.emplace_back(enemyFactory->randomEnemy());
+    }
+
+}
+
+void Game::handleCollisions() {
+    for (Enemy & e : enemies) {
+        if (e.hitboxHitDetection(player)) {
+            e.onCrash();
+            player.onCrash();
+        }
+    }
 }
 

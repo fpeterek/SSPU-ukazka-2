@@ -15,6 +15,8 @@ class Projectile : public Entity {
     static const uint64_t radius;
     sf::CircleShape bullet;
 
+    bool keepAlive = true;
+
     sf::FloatRect globalBounds() const override;
 
 public:
@@ -26,6 +28,10 @@ public:
     uint64_t damage();
 
     float scale() const override;
+
+    void onHit() override;
+    void onCrash() override;
+    bool setForRemoval() override;
 
     Projectile(const sf::Vector2f & position, float scale);
 
