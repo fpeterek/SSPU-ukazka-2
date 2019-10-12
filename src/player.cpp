@@ -38,3 +38,11 @@ void Player::onCrash() {
     --health;
 }
 
+uint64_t Player::score() const {
+    return _score;
+}
+
+void Player::incScore() {
+    ++_score;
+}
+

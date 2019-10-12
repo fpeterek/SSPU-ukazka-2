@@ -13,6 +13,8 @@ class Player : public Aircraft {
     static const int64_t maxHealth;
     static const uint64_t verticalVelocity;
 
+    uint64_t _score = 0;
+
 public:
 
     void update() override;
@@ -23,6 +25,9 @@ public:
 
     bool setForRemoval() override;
     void onCrash() override;
+
+    uint64_t score() const;
+    void incScore();
 
 };
 

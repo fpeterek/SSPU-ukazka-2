@@ -3,6 +3,7 @@
 //
 
 #include <random.hpp>
+#include <sstream>
 #include "game.hpp"
 
 using namespace std::placeholders;
@@ -19,6 +20,7 @@ void Game::draw() {
         win.draw(e);
     }
     win.draw(player);
+    displayInfo();
     win.display();
 
 }
@@ -82,16 +84,17 @@ Game::Game() :
     win.setFramerateLimit(60);
 
     loadTextures();
+    loadFonts();
 
-    player.setTexture(textureManager.getTexture("player"));
-    enemyFactory = std::make_shared<EnemyFactory>(textureManager.getTexture("enemy"), win.getSize(), scale, weaponFactory);
+    player.setTexture(resourceManager.getTexture("player"));
+    enemyFactory = std::make_shared<EnemyFactory>(resourceManager.getTexture("enemy"), win.getSize(), scale, weaponFactory);
     projectileFactory.setScale(scale);
 
 }
 
 void Game::loadTextures() {
-    textureManager.loadTexture("player", "resources/player.png");
-    textureManager.loadTexture("enemy", "resources/enemy.png");
+    resourceManager.loadTexture("player", "resources/player.png");
+    resourceManager.loadTexture("enemy", "resources/enemy.png");
 }
 
 void Game::handleMovement() {
@@ -173,6 +176,7 @@ void Game::handleCollisions() {
         } else {
             for (Enemy & e : enemies) {
                 if (e.hitboxHitDetection(p)) {
+                    player.incScore();
                     e.onHit();
                     p.onCrash();
                     continue;
@@ -185,4 +189,30 @@ void Game::handleCollisions() {
 
 void Game::spawnBullet(sf::Vector2f pos, Shooter shooter, sf::Vector2f forces, sf::Color fill) {
     projectiles.emplace_back(pos, scale, shooter, forces, fill);
+}
+
+void Game::loadFonts() {
+    resourceManager.loadFont("main", "resources/LCD_Solid.ttf");
+}
+
+void Game::displayInfo() {
+
+    std::stringstream ss;
+    ss << "Health: " << player.hp() << std::endl;
+
+    std::stringstream ss2;
+    ss2 << "Score: " << player.score() << std::endl;
+
+    sf::Text left(ss.str(), resourceManager.getFont("main"), 12 * scale);
+    sf::Text right(ss2.str(), resourceManager.getFont("main"), 12 * scale);
+
+    left.setPosition(5, 0);
+    right.setPosition(win.getSize().x - right.getLocalBounds().width - 5, 0);
+
+    left.setFillColor(sf::Color::Black);
+    right.setFillColor(sf::Color::Black);
+
+    win.draw(left);
+    win.draw(right);
+
 }

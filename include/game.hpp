@@ -13,7 +13,7 @@
 #include "projectile.hpp"
 #include "enemy.hpp"
 #include "player.hpp"
-#include "texture_manager.hpp"
+#include "resource_manager.hpp"
 #include "enemy_factory.hpp"
 #include "projectile_factory.hpp"
 #include "weapon_factory.hpp"
@@ -24,7 +24,7 @@ class Game {
     static constexpr uint64_t spawnChance = 30;
 
     sf::RenderWindow win;
-    TextureManager textureManager;
+    ResourceManager resourceManager;
     std::shared_ptr<EnemyFactory> enemyFactory;
     ProjectileFactory projectileFactory;
     WeaponFactory weaponFactory;
@@ -36,6 +36,7 @@ class Game {
     std::vector<Projectile> projectiles;
 
     void loadTextures();
+    void loadFonts();
 
     void spawnEnemies();
     void deleteEntities();
@@ -43,6 +44,7 @@ class Game {
     void tick();
     void handleEvents();
     void draw();
+    void displayInfo();
     void handleMovement();
     void moveEntity(Moveable & mv);
     void spawnBullet(sf::Vector2f pos, Shooter shooter, sf::Vector2f forces, sf::Color fill);
