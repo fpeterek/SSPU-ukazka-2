@@ -5,11 +5,13 @@
 #include <random.hpp>
 #include "game.hpp"
 
+using namespace std::placeholders;
+
 const sf::Color Game::background = sf::Color(255, 255, 255);
 
 void Game::draw() {
 
-    win.clear(sf::Color::White);
+    win.clear(background);
     for (const Projectile & p : projectiles) {
         win.draw(p);
     }
@@ -39,6 +41,9 @@ void Game::handleEvents() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
         player.moveDown();
     }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+        player.shoot();
+    }
 
 }
 
@@ -47,8 +52,11 @@ void Game::tick() {
     handleEvents();
     handleMovement();
     handleCollisions();
-    deleteEnemies();
+    deleteEntities();
     player.update();
+    for (auto & e : enemies) {
+        e.update();
+    }
     draw();
 }
 
@@ -62,17 +70,22 @@ void Game::run() {
 
 Game::Game() :
         win(sf::VideoMode::getDesktopMode(), "Aircraft", sf::Style::Fullscreen),
-        player(sf::Texture(), sf::Vector2f(0, 0), 1.f) {
+        scale(win.getSize().x / 800.f),
+        projectileFactory(std::bind(&Game::spawnBullet, this, _1, _2, _3, _4), 1.f),
+        weaponFactory(projectileFactory),
+        player(sf::Texture(),
+                sf::Vector2f(win.getSize().x / 15, win.getSize().y / 2),
+                scale,
+                weaponFactory.createPlayerWeapon()
+                ) {
 
     win.setFramerateLimit(60);
-    scale = win.getSize().x / 800.f;
 
     loadTextures();
 
-    const auto playerPos = sf::Vector2f(win.getSize().x / 15, win.getSize().y / 2);
-    player = Player(textureManager.getTexture("player"), playerPos, scale);
-
-    enemyFactory = std::make_shared<EnemyFactory>(textureManager.getTexture("enemy"), win.getSize(), scale);
+    player.setTexture(textureManager.getTexture("player"));
+    enemyFactory = std::make_shared<EnemyFactory>(textureManager.getTexture("enemy"), win.getSize(), scale, weaponFactory);
+    projectileFactory.setScale(scale);
 
 }
 
@@ -86,6 +99,9 @@ void Game::handleMovement() {
     moveEntity(player);
     for (auto & e : enemies) {
         moveEntity(e);
+    }
+    for (auto & p : projectiles) {
+        moveEntity(p);
     }
 
 }
@@ -106,13 +122,24 @@ void Game::moveEntity(Moveable & mv) {
 
 }
 
-void Game::deleteEnemies() {
+void Game::deleteEntities() {
 
     for (auto iter = enemies.begin(); iter != enemies.end();) {
 
         const auto bounds = iter->globalBounds();
         if (bounds.left < bounds.width * -1 or iter->setForRemoval()) {
             enemies.erase(iter);
+        } else {
+            ++iter;
+        }
+
+    }
+
+    for (auto iter = projectiles.begin(); iter != projectiles.end();) {
+
+        const auto bounds = iter->globalBounds();
+        if (bounds.left < bounds.width * -1 or bounds.left > win.getSize().x - bounds.width or iter->setForRemoval()) {
+            projectiles.erase(iter);
         } else {
             ++iter;
         }
@@ -136,5 +163,26 @@ void Game::handleCollisions() {
             player.onCrash();
         }
     }
+
+    for (Projectile & p : projectiles) {
+        if (p.shooter() == Shooter::Enemy) {
+            if (player.hitboxHitDetection(p)) {
+                player.onHit();
+                p.onCrash();
+            }
+        } else {
+            for (Enemy & e : enemies) {
+                if (e.hitboxHitDetection(p)) {
+                    e.onHit();
+                    p.onCrash();
+                    continue;
+                }
+            }
+        }
+    }
+
 }
 
+void Game::spawnBullet(sf::Vector2f pos, Shooter shooter, sf::Vector2f forces, sf::Color fill) {
+    projectiles.emplace_back(pos, scale, shooter, forces, fill);
+}

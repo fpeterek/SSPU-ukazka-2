@@ -12,12 +12,10 @@ class Enemy : public Aircraft {
 
     static const int64_t maxHealth;
 
-    Projectile shoot() override;
-
 public:
 
     void update() override;
-    Enemy(const sf::Texture & texture, const sf::Vector2f & pos, float scale);
+    Enemy(const sf::Texture & texture, const sf::Vector2f & pos, float scale, Weapon weapon);
 
 };
 

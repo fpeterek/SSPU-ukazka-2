@@ -6,7 +6,8 @@
 
 EnemyFactory::EnemyFactory(const sf::Texture & texture,
         const sf::Vector2u dim,
-        const float scale) : texture(texture), dim(dim), scale(scale),
+        const float scale,
+        WeaponFactory & factory) : texture(texture), dim(dim), scale(scale), factory(factory),
         yBound(dim.y - (texture.getSize().y * scale)) {
 
 }
@@ -14,5 +15,5 @@ EnemyFactory::EnemyFactory(const sf::Texture & texture,
 Enemy EnemyFactory::randomEnemy() {
     const uint64_t x = dim.x;
     const uint64_t y = Random::randUInt(0, yBound);
-    return Enemy(texture, sf::Vector2f(x, y), scale);
+    return Enemy(texture, sf::Vector2f(x, y), scale, factory.createEnemyWeapon());
 }

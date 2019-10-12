@@ -10,6 +10,7 @@
 
 #include "enemy.hpp"
 #include "random.hpp"
+#include "weapon_factory.hpp"
 
 class EnemyFactory {
 
@@ -17,9 +18,10 @@ class EnemyFactory {
     const sf::Vector2u dim;
     const float scale;
     const uint64_t yBound;
+    WeaponFactory & factory;
 
 public:
-    EnemyFactory(const sf::Texture & texture, sf::Vector2u dim, float scale);
+    EnemyFactory(const sf::Texture & texture, sf::Vector2u dim, float scale, WeaponFactory & factory);
     Enemy randomEnemy();
 
 };

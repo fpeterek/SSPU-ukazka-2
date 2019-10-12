@@ -7,16 +7,13 @@
 
 const int64_t Enemy::maxHealth = 1;
 
-Projectile Enemy::shoot() {
-    return Projectile(position(), scale());
-}
-
 void Enemy::update() {
-
+    weapon.shoot(position());
+    weapon.tick();
 }
 
-Enemy::Enemy(const sf::Texture & texture, const sf::Vector2f & pos, const float scale) :
-        Aircraft(texture, pos, scale) {
+Enemy::Enemy(const sf::Texture & texture, const sf::Vector2f & pos, const float scale, Weapon weapon) :
+        Aircraft(texture, pos, scale, weapon) {
 
     forceVector.x = Random::randInt(-7, -4);
     health = maxHealth;

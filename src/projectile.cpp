@@ -4,7 +4,6 @@
 
 #include "projectile.hpp"
 
-const sf::Color Projectile::fill = sf::Color(0, 255, 255);
 const sf::Color Projectile::outline = sf::Color(0, 0, 0);
 const uint64_t Projectile::radius = 5;
 
@@ -20,14 +19,18 @@ sf::FloatRect Projectile::globalBounds() const {
     return bullet.getGlobalBounds();
 }
 
-Projectile::Projectile(const sf::Vector2f & position, const float scale) {
+Projectile::Projectile(const sf::Vector2f & position, const float scale,
+        const Shooter shooter, sf::Vector2f forces, sf::Color fill) :
+        sh(shooter), forceVector(forces), fill(fill) {
+
     bullet.setRadius(radius);
     bullet.setFillColor(fill);
     bullet.setOutlineColor(outline);
     bullet.setOutlineThickness(1);
     bullet.setScale(scale, scale);
-    bullet.setOrigin(bullet.getGlobalBounds().width / 2, bullet.getGlobalBounds().height / 2);
+    bullet.setOrigin(radius / 2, radius / 2);
     bullet.setPosition(position);
+
 }
 
 void Projectile::draw(sf::RenderTarget & target, sf::RenderStates states) const {
@@ -52,4 +55,20 @@ void Projectile::onCrash() {
 
 bool Projectile::setForRemoval() {
     return not keepAlive;
+}
+
+void Projectile::setPosition(sf::Vector2f newPos) {
+    bullet.setPosition(newPos);
+}
+
+void Projectile::move(sf::Vector2f diff) {
+    bullet.move(diff);
+}
+
+sf::Vector2f Projectile::forces() const {
+    return forceVector;
+}
+
+Shooter Projectile::shooter() {
+    return sh;
 }

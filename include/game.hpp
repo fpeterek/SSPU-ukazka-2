@@ -15,16 +15,20 @@
 #include "player.hpp"
 #include "texture_manager.hpp"
 #include "enemy_factory.hpp"
+#include "projectile_factory.hpp"
+#include "weapon_factory.hpp"
 
 class Game {
 
     static const sf::Color background;
-    static constexpr uint64_t spawnChance = 60;
+    static constexpr uint64_t spawnChance = 30;
 
     sf::RenderWindow win;
     TextureManager textureManager;
     std::shared_ptr<EnemyFactory> enemyFactory;
-    float scale;
+    ProjectileFactory projectileFactory;
+    WeaponFactory weaponFactory;
+    const float scale;
 
     Player player;
 
@@ -34,13 +38,14 @@ class Game {
     void loadTextures();
 
     void spawnEnemies();
-    void deleteEnemies();
+    void deleteEntities();
     void handleCollisions();
     void tick();
     void handleEvents();
     void draw();
     void handleMovement();
     void moveEntity(Moveable & mv);
+    void spawnBullet(sf::Vector2f pos, Shooter shooter, sf::Vector2f forces, sf::Color fill);
 
 public:
 

@@ -7,17 +7,14 @@
 const int64_t Player::maxHealth = 3;
 const uint64_t Player::verticalVelocity = 6;
 
-Projectile Player::shoot() {
-    return Projectile(position(), scale());
-}
-
 void Player::update() {
+    weapon.tick();
     forceVector.x = 0;
     forceVector.y = 0;
 }
 
-Player::Player(const sf::Texture & texture, const sf::Vector2f & pos, const float scale) :
-        Aircraft(texture, pos, scale) {
+Player::Player(const sf::Texture & texture, const sf::Vector2f & pos, const float scale, Weapon weapon) :
+        Aircraft(texture, pos, scale, weapon) {
 
     velocity = verticalVelocity;
     health = maxHealth;
