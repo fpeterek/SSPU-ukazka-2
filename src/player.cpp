@@ -13,8 +13,9 @@ void Player::update() {
     forceVector.y = 0;
 }
 
-Player::Player(const sf::Texture & texture, const sf::Vector2f & pos, const float scale, Weapon weapon) :
-        Aircraft(texture, pos, scale, weapon) {
+Player::Player(const sf::Texture & texture, const sf::Vector2f & pos, const float scale,
+        Weapon weapon, const ParticleCreator & pc) :
+        Aircraft(texture, pos, scale, weapon, pc) {
 
     velocity = verticalVelocity;
     health = maxHealth;
@@ -30,12 +31,12 @@ void Player::moveDown() {
     forceVector.y = 1 * velocity;
 }
 
-bool Player::setForRemoval() {
+bool Player::setForRemoval() const {
     return false;
 }
 
 void Player::onCrash() {
-    --health;
+    onHit();
 }
 
 uint64_t Player::score() const {

@@ -6,6 +6,7 @@
 #define SSPU_UKAZKA_2_GAME_HPP
 
 #include <vector>
+#include <memory>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -17,6 +18,8 @@
 #include "enemy_factory.hpp"
 #include "projectile_factory.hpp"
 #include "weapon_factory.hpp"
+#include "particle.hpp"
+#include "particle_creator.hpp"
 
 class Game {
 
@@ -28,12 +31,14 @@ class Game {
     std::shared_ptr<EnemyFactory> enemyFactory;
     ProjectileFactory projectileFactory;
     WeaponFactory weaponFactory;
+    ParticleCreator particleCreator;
     const float scale;
 
     Player player;
 
     std::vector<Enemy> enemies;
     std::vector<Projectile> projectiles;
+    std::vector<Particle> particles;
 
     void loadTextures();
     void loadFonts();
@@ -48,6 +53,7 @@ class Game {
     void handleMovement();
     void moveEntity(Moveable & mv);
     void spawnBullet(sf::Vector2f pos, Shooter shooter, sf::Vector2f forces, sf::Color fill);
+    void spawnParticle(const sf::Texture & txt, uint64_t spriteCount, uint64_t period, sf::Vector2f pos);
 
 public:
 

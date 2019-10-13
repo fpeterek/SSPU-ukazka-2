@@ -10,6 +10,7 @@
 #include "projectile.hpp"
 #include "entity.hpp"
 #include "weapon.hpp"
+#include "particle_creator.hpp"
 
 class Aircraft : public Entity, public Moveable {
 
@@ -17,6 +18,7 @@ class Aircraft : public Entity, public Moveable {
     sf::RectangleShape wingBox;
     sf::RectangleShape fuselageBox;
     float _scale;
+    std::reference_wrapper<const ParticleCreator> particleCreator;
 
 protected:
 
@@ -27,9 +29,10 @@ protected:
 
     void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
 
-    Aircraft(const sf::Texture & texture, const sf::Vector2f & pos, float scale, Weapon weapon);
+    Aircraft(const sf::Texture & texture, const sf::Vector2f & pos, float scale,
+            Weapon weapon, const ParticleCreator & particleCreator);
 
-    void init(const sf::Texture & texture, const sf::Vector2f pos);
+    void init(const sf::Texture & texture, sf::Vector2f pos);
 
 public:
 
@@ -46,7 +49,8 @@ public:
     sf::Vector2f forces() const override;
     void onHit() override;
     void onCrash() override;
-    bool setForRemoval() override;
+    virtual void onDeath();
+    bool setForRemoval() const override;
     bool hitboxHitDetection(const Entity & e);
     bool hitboxHitDetection(const Aircraft & e);
 

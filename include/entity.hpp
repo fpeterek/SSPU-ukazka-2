@@ -25,7 +25,7 @@ public:
     virtual void update() = 0;
     virtual void onHit() = 0;
     virtual void onCrash() = 0;
-    virtual bool setForRemoval() = 0;
+    virtual bool setForRemoval() const = 0;
 
 };
 

@@ -6,7 +6,7 @@
 #include "aircraft.hpp"
 
 Aircraft::Aircraft(const sf::Texture & texture, const sf::Vector2f & pos, const float scale,
-        Weapon weapon) : weapon(weapon), _scale(scale) {
+        Weapon weapon, const ParticleCreator & pc) : weapon(weapon), _scale(scale), particleCreator(pc) {
 
     init(texture, pos);
 
@@ -56,13 +56,17 @@ int64_t Aircraft::hp() {
 
 void Aircraft::onHit() {
     --health;
+    if (not health) {
+        onDeath();
+    }
 }
 
 void Aircraft::onCrash() {
     health = 0;
+    onDeath();
 }
 
-bool Aircraft::setForRemoval() {
+bool Aircraft::setForRemoval() const {
     return health <= 0;
 }
 
@@ -108,4 +112,8 @@ void Aircraft::init(const sf::Texture & texture, const sf::Vector2f pos) {
     fuselageBox.setPosition(position().x, position().y + texture.getSize().y / 2 * _scale - 3.5 * _scale);
     fuselageBox.setFillColor(sf::Color::Magenta);
 
+}
+
+void Aircraft::onDeath() {
+    particleCreator.get().createExplosion(position());
 }

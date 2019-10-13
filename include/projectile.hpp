@@ -41,7 +41,7 @@ public:
 
     void onHit() override;
     void onCrash() override;
-    bool setForRemoval() override;
+    bool setForRemoval() const override;
 
     void setPosition(sf::Vector2f newPos) override;
     void move(sf::Vector2f diff) override;

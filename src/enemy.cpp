@@ -12,8 +12,8 @@ void Enemy::update() {
     weapon.tick();
 }
 
-Enemy::Enemy(const sf::Texture & texture, const sf::Vector2f & pos, const float scale, Weapon weapon) :
-        Aircraft(texture, pos, scale, weapon) {
+Enemy::Enemy(const sf::Texture & texture, const sf::Vector2f & pos, const float scale,
+        Weapon weapon, const ParticleCreator & pc) : Aircraft(texture, pos, scale, weapon, pc) {
 
     forceVector.x = Random::randInt(-7, -4);
     health = maxHealth;

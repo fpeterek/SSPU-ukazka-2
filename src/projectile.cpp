@@ -53,7 +53,7 @@ void Projectile::onCrash() {
     keepAlive = false;
 }
 
-bool Projectile::setForRemoval() {
+bool Projectile::setForRemoval() const {
     return not keepAlive;
 }
 

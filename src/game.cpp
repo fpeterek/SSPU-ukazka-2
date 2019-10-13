@@ -4,11 +4,12 @@
 
 #include <random.hpp>
 #include <sstream>
+#include <memory>
 #include "game.hpp"
 
 using namespace std::placeholders;
 
-const sf::Color Game::background = sf::Color(255, 255, 255);
+const sf::Color Game::background = sf::Color(46, 203, 255);
 
 void Game::draw() {
 
@@ -20,6 +21,9 @@ void Game::draw() {
         win.draw(e);
     }
     win.draw(player);
+    for(const Particle & p : particles) {
+        win.draw(p);
+    }
     displayInfo();
     win.display();
 
@@ -59,6 +63,9 @@ void Game::tick() {
     for (auto & e : enemies) {
         e.update();
     }
+    for (auto & p : particles) {
+        p.update();
+    }
     draw();
 }
 
@@ -74,11 +81,14 @@ Game::Game() :
         win(sf::VideoMode::getDesktopMode(), "Aircraft", sf::Style::Fullscreen),
         scale(win.getSize().x / 800.f),
         projectileFactory(std::bind(&Game::spawnBullet, this, _1, _2, _3, _4), 1.f),
+        resourceManager(),
         weaponFactory(projectileFactory),
+        particleCreator(std::bind(&Game::spawnParticle, this, _1, _2, _3, _4), resourceManager),
         player(sf::Texture(),
                 sf::Vector2f(win.getSize().x / 15, win.getSize().y / 2),
                 scale,
-                weaponFactory.createPlayerWeapon()
+                weaponFactory.createPlayerWeapon(),
+                particleCreator
                 ) {
 
     win.setFramerateLimit(60);
@@ -87,7 +97,8 @@ Game::Game() :
     loadFonts();
 
     player.setTexture(resourceManager.getTexture("player"));
-    enemyFactory = std::make_shared<EnemyFactory>(resourceManager.getTexture("enemy"), win.getSize(), scale, weaponFactory);
+    enemyFactory = std::make_shared<EnemyFactory>(resourceManager.getTexture("enemy"), win.getSize(),
+            scale, weaponFactory, particleCreator);
     projectileFactory.setScale(scale);
 
 }
@@ -95,6 +106,7 @@ Game::Game() :
 void Game::loadTextures() {
     resourceManager.loadTexture("player", "resources/player.png");
     resourceManager.loadTexture("enemy", "resources/enemy.png");
+    resourceManager.loadTexture("explosion", "resources/explosion.png");
 }
 
 void Game::handleMovement() {
@@ -147,6 +159,14 @@ void Game::deleteEntities() {
             ++iter;
         }
 
+    }
+
+    for (auto iter = particles.begin(); iter != particles.end();) {
+        if (iter->setForRemoval()) {
+            particles.erase(iter);
+        } else {
+            ++iter;
+        }
     }
 
 }
@@ -215,4 +235,8 @@ void Game::displayInfo() {
     win.draw(left);
     win.draw(right);
 
+}
+
+void Game::spawnParticle(const sf::Texture & txt, const uint64_t count, const uint64_t period, sf::Vector2f pos) {
+    particles.emplace_back(txt, count, period, scale, pos);
 }

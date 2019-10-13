@@ -19,9 +19,11 @@ class EnemyFactory {
     const float scale;
     const uint64_t yBound;
     WeaponFactory & factory;
+    const ParticleCreator & pc;
 
 public:
-    EnemyFactory(const sf::Texture & texture, sf::Vector2u dim, float scale, WeaponFactory & factory);
+    EnemyFactory(const sf::Texture & texture, sf::Vector2u dim, float scale,
+            WeaponFactory & factory, const ParticleCreator & particleCreator);
     Enemy randomEnemy();
 
 };

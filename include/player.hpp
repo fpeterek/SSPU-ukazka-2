@@ -18,12 +18,13 @@ class Player : public Aircraft {
 public:
 
     void update() override;
-    Player(const sf::Texture & texture, const sf::Vector2f & pos, float scale, Weapon weapon);
+    Player(const sf::Texture & texture, const sf::Vector2f & pos, float scale,
+            Weapon weapon, const ParticleCreator & particleCreator);
 
     void moveUp();
     void moveDown();
 
-    bool setForRemoval() override;
+    bool setForRemoval() const override;
     void onCrash() override;
 
     uint64_t score() const;

@@ -15,7 +15,8 @@ class Enemy : public Aircraft {
 public:
 
     void update() override;
-    Enemy(const sf::Texture & texture, const sf::Vector2f & pos, float scale, Weapon weapon);
+    Enemy(const sf::Texture & texture, const sf::Vector2f & pos, float scale,
+            Weapon weapon, const ParticleCreator & particleCreator);
 
 };
 
