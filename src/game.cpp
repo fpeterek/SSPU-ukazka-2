@@ -41,32 +41,51 @@ void Game::handleEvents() {
         }
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) and not gameOver()) {
         player.moveUp();
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and not gameOver()) {
         player.moveDown();
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) and not gameOver()) {
         player.shoot();
     }
 
 }
 
 void Game::tick() {
-    spawnEnemies();
+
+    if (not gameOver()) {
+        spawnEnemies();
+    }
+
     handleEvents();
     handleMovement();
-    handleCollisions();
-    deleteEntities();
-    player.update();
-    for (auto & e : enemies) {
-        e.update();
+
+    if (not gameOver()) {
+        handleCollisions();
     }
+    
+    update();
+
+    deleteEntities();
+
+    draw();
+}
+
+void Game::update() {
+
+    if (not gameOver()) {
+        player.update();
+        for (auto &e : enemies) {
+            e.update();
+        }
+    }
+
     for (auto & p : particles) {
         p.update();
     }
-    draw();
+
 }
 
 void Game::run() {
@@ -235,8 +254,20 @@ void Game::displayInfo() {
     win.draw(left);
     win.draw(right);
 
+    if (gameOver()) {
+        sf::Text go("Game Over", resourceManager.getFont("main"), 36 * scale);
+        go.setPosition(win.getSize().x / 2 - go.getLocalBounds().width / 2,
+                    win.getSize().y / 2 - go.getLocalBounds().height / 2);
+
+        win.draw(go);
+    }
+
 }
 
 void Game::spawnParticle(const sf::Texture & txt, const uint64_t count, const uint64_t period, sf::Vector2f pos) {
     particles.emplace_back(txt, count, period, scale, pos);
+}
+
+bool Game::gameOver() const {
+    return player.hp() <= 0;
 }

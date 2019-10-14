@@ -38,7 +38,7 @@ public:
 
     void setTexture(const sf::Texture & texture);
 
-    int64_t hp();
+    int64_t hp() const;
     void move(sf::Vector2f diff) override;
     void setPosition(sf::Vector2f pos) override;
     sf::FloatRect globalBounds() const override;

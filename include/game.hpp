@@ -40,6 +40,8 @@ class Game {
     std::vector<Projectile> projectiles;
     std::vector<Particle> particles;
 
+    bool gameOver() const;
+
     void loadTextures();
     void loadFonts();
 
@@ -47,6 +49,7 @@ class Game {
     void deleteEntities();
     void handleCollisions();
     void tick();
+    void update();
     void handleEvents();
     void draw();
     void displayInfo();

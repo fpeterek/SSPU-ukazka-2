@@ -15,6 +15,9 @@ class Player : public Aircraft {
 
     uint64_t _score = 0;
 
+protected:
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
 public:
 
     void update() override;

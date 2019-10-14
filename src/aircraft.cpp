@@ -50,7 +50,7 @@ sf::Vector2f Aircraft::forces() const {
     return forceVector;
 }
 
-int64_t Aircraft::hp() {
+int64_t Aircraft::hp() const {
     return health;
 }
 

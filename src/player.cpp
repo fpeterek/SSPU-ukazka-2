@@ -47,3 +47,9 @@ void Player::incScore() {
     ++_score;
 }
 
+void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+    if (health > 0) {
+        Aircraft::draw(target, states);
+    }
+}
+
