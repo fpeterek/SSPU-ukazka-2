@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "aircraft.hpp"
+#include "health_bar.hpp"
 
 class Player : public Aircraft {
 
@@ -15,14 +16,15 @@ class Player : public Aircraft {
 
     uint64_t _score = 0;
 
+    HealthBar healthBar;
+
 protected:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 public:
 
     void update() override;
-    Player(const sf::Texture & texture, const sf::Vector2f & pos, float scale,
-            Weapon weapon, const ParticleCreator & particleCreator);
+    Player(Weapon weapon, const ParticleCreator & particleCreator, float scale);
 
     void moveUp();
     void moveDown();
@@ -32,6 +34,13 @@ public:
 
     uint64_t score() const;
     void incScore();
+
+    void move(sf::Vector2f diff) override;
+    void setPosition(sf::Vector2f pos) override;
+
+    void onHit() override;
+
+    void init(const sf::Texture & texture, const sf::Vector2f & pos);
 
 };
 

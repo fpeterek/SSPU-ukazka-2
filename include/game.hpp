@@ -20,6 +20,7 @@
 #include "weapon_factory.hpp"
 #include "particle.hpp"
 #include "particle_creator.hpp"
+#include "hud.hpp"
 
 class Game {
 
@@ -32,6 +33,7 @@ class Game {
     ProjectileFactory projectileFactory;
     WeaponFactory weaponFactory;
     ParticleCreator particleCreator;
+    std::shared_ptr<HUD> hud;
     const float scale;
 
     Player player;
@@ -52,7 +54,6 @@ class Game {
     void update();
     void handleEvents();
     void draw();
-    void displayInfo();
     void handleMovement();
     void moveEntity(Moveable & mv);
     void spawnBullet(sf::Vector2f pos, Shooter shooter, sf::Vector2f forces, sf::Color fill);

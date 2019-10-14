@@ -24,7 +24,7 @@ void Game::draw() {
     for(const Particle & p : particles) {
         win.draw(p);
     }
-    displayInfo();
+    win.draw(*hud);
     win.display();
 
 }
@@ -75,11 +75,17 @@ void Game::tick() {
 
 void Game::update() {
 
+    hud->update(player.hp(), player.score());
+
     if (not gameOver()) {
         player.update();
         for (auto &e : enemies) {
             e.update();
         }
+    }
+
+    if (gameOver()) {
+        hud->gameOver();
     }
 
     for (auto & p : particles) {
@@ -103,21 +109,19 @@ Game::Game() :
         resourceManager(),
         weaponFactory(projectileFactory),
         particleCreator(std::bind(&Game::spawnParticle, this, _1, _2, _3, _4), resourceManager),
-        player(sf::Texture(),
-                sf::Vector2f(win.getSize().x / 15, win.getSize().y / 2),
-                scale,
-                weaponFactory.createPlayerWeapon(),
-                particleCreator
-                ) {
+        player(weaponFactory.createPlayerWeapon(), particleCreator, scale) {
 
     win.setFramerateLimit(60);
 
     loadTextures();
     loadFonts();
 
-    player.setTexture(resourceManager.getTexture("player"));
+    player.init(resourceManager.getTexture("player"),
+            sf::Vector2f(win.getSize().x / 15, win.getSize().y / 2));
+
     enemyFactory = std::make_shared<EnemyFactory>(resourceManager.getTexture("enemy"), win.getSize(),
             scale, weaponFactory, particleCreator);
+    hud = std::make_shared<HUD>(win.getSize(), scale, resourceManager);
     projectileFactory.setScale(scale);
 
 }
@@ -232,36 +236,6 @@ void Game::spawnBullet(sf::Vector2f pos, Shooter shooter, sf::Vector2f forces, s
 
 void Game::loadFonts() {
     resourceManager.loadFont("main", "resources/LCD_Solid.ttf");
-}
-
-void Game::displayInfo() {
-
-    std::stringstream ss;
-    ss << "Health: " << player.hp() << std::endl;
-
-    std::stringstream ss2;
-    ss2 << "Score: " << player.score() << std::endl;
-
-    sf::Text left(ss.str(), resourceManager.getFont("main"), 12 * scale);
-    sf::Text right(ss2.str(), resourceManager.getFont("main"), 12 * scale);
-
-    left.setPosition(5, 0);
-    right.setPosition(win.getSize().x - right.getLocalBounds().width - 5, 0);
-
-    left.setFillColor(sf::Color::Black);
-    right.setFillColor(sf::Color::Black);
-
-    win.draw(left);
-    win.draw(right);
-
-    if (gameOver()) {
-        sf::Text go("Game Over", resourceManager.getFont("main"), 36 * scale);
-        go.setPosition(win.getSize().x / 2 - go.getLocalBounds().width / 2,
-                    win.getSize().y / 2 - go.getLocalBounds().height / 2);
-
-        win.draw(go);
-    }
-
 }
 
 void Game::spawnParticle(const sf::Texture & txt, const uint64_t count, const uint64_t period, sf::Vector2f pos) {
