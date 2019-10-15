@@ -21,14 +21,15 @@
 #include "particle.hpp"
 #include "particle_creator.hpp"
 #include "hud.hpp"
+#include "background.hpp"
 
 class Game {
 
-    static const sf::Color background;
     static constexpr uint64_t spawnChance = 30;
 
     sf::RenderWindow win;
     ResourceManager resourceManager;
+    std::shared_ptr<Background> background;
     std::shared_ptr<EnemyFactory> enemyFactory;
     ProjectileFactory projectileFactory;
     WeaponFactory weaponFactory;

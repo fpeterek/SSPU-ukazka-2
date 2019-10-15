@@ -9,11 +9,10 @@
 
 using namespace std::placeholders;
 
-const sf::Color Game::background = sf::Color(46, 203, 255);
-
 void Game::draw() {
 
-    win.clear(background);
+    win.clear();
+    win.draw(*background);
     for (const Projectile & p : projectiles) {
         win.draw(p);
     }
@@ -75,6 +74,8 @@ void Game::tick() {
 
 void Game::update() {
 
+    background->update();
+
     hud->update(player.hp(), player.score());
 
     if (not gameOver()) {
@@ -116,6 +117,8 @@ Game::Game() :
     loadTextures();
     loadFonts();
 
+    background = std::make_shared<Background>(resourceManager, win.getSize(), scale);
+
     player.init(resourceManager.getTexture("player"),
             sf::Vector2f(win.getSize().x / 15, win.getSize().y / 2));
 
@@ -130,6 +133,7 @@ void Game::loadTextures() {
     resourceManager.loadTexture("player", "resources/player.png");
     resourceManager.loadTexture("enemy", "resources/enemy.png");
     resourceManager.loadTexture("explosion", "resources/explosion.png");
+    resourceManager.loadTexture("cloud", "resources/cloud.png");
 }
 
 void Game::handleMovement() {
