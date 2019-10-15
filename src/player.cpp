@@ -4,7 +4,7 @@
 
 #include "player.hpp"
 
-const int64_t Player::maxHealth = 30;
+const int64_t Player::maxHealth = 3;
 const uint64_t Player::verticalVelocity = 6;
 
 void Player::update() {
